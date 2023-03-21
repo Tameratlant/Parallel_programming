@@ -4,7 +4,7 @@
 #include "mpi.h"
 
 
-//mpicc Pi.c -lm
+//mpicc pi.c -lm
 //mpirun -n 4 ./a.out
 
 /*
@@ -36,23 +36,23 @@ int main(int argc, char **argv) {
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    printf("N = %d\n", size);
+    printf("rank = %d\n", rank);
     Pi+=rank;
     //printf("%lf\n",Pi);
 
     if (rank != 0) {
         for (int i = 1 + (rank) / (size - 1) * MAX; i < 1 + (rank + 1) / (size - 1) * MAX; i++) {
-            //Pi_part += 1 / (i*i);
+            Pi_part += 1 / (i*i);
             //Pi_part += 1;
         }
-        //MPI_Send(&Pi_part, 1, MPI_FLOAT, 1, 5, MPI_COMM_WORLD);
+        MPI_Send(&Pi_part, 1, MPI_FLOAT, 1, 5, MPI_COMM_WORLD);
     } else {
-        /*
+        
         for (int i = 0; i < size - 1; i++) {
             MPI_Recv(&Pi_part, 1, MPI_FLOAT, 1, 5, MPI_COMM_WORLD, &status);
             Pi+=Pi_part;
         }
-        */
+        
         printf("Pi = %lf\n", sqrt(Pi*6));
     }
 

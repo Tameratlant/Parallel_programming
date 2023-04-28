@@ -11,9 +11,10 @@ t = np.arange(0, 50.01, 0.01)
 
 T, X = np.meshgrid(t, x)
 
-Z = np.genfromtxt ("output.csv", delimiter=",", dtype=np.double)
+Z = np.genfromtxt ("build/output.csv", delimiter=",", dtype=np.double)
 
-surf = ax.plot_surface(T, X, Z, cmap = plt.cm.cividis)
+#surf = ax.plot_surface(T, X, Z, cmap = plt.cm.cividis)
+surf = ax.plot_surface(T, X, Z, cmap=plt.cm.coolwarm)
 
 ax.set_xlabel('x', labelpad = 20)
 ax.set_ylabel('t', labelpad = 20)

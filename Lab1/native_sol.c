@@ -13,28 +13,7 @@ extern double x_max;
 extern double t_step;
 extern double x_step;
 
-void fill_matrix(double **matrix, int n_k, int n_m) {
-  int i, j;
-  double frac = t_step / x_step;
-
-  for (j = 0; j < n_m; j++) {
-    matrix[0][j] = fi(j * x_step);
-  }
-
-  for (i = 0; i < n_k; i++) {
-    matrix[i][0] = ksi(i * t_step);
-  }
-
-  for (i = 0; i < n_k - 1; i++) {
-    for (j = 0; j < n_m; j++) {
-      matrix[i + 1][j] =
-          (2 * t_step * func((i + 0.5) * t_step, (j + 0.5) * x_step) /
-           (1 + frac)) -
-          (matrix[i + 1][j - 1] * (1 - frac) / (1 + frac)) +
-          (matrix[i][j - 1]) + (matrix[i][j] * (1 - frac) / (1 + frac));
-    }
-  }
-}
+void fill_matrix(double **matrix, int n_k, int n_m);
 
 int main(int argc, char **argv) {
   int i;
@@ -68,4 +47,27 @@ int main(int argc, char **argv) {
   free(matrix);
 
   return 0;
+}
+
+void fill_matrix(double **matrix, int n_k, int n_m) {
+  int i, j;
+  double frac = t_step / x_step;
+
+  for (j = 0; j < n_m; j++) {
+    matrix[0][j] = fi(j * x_step);
+  }
+
+  for (i = 0; i < n_k; i++) {
+    matrix[i][0] = ksi(i * t_step);
+  }
+
+  for (i = 0; i < n_k - 1; i++) {
+    for (j = 0; j < n_m; j++) {
+      matrix[i + 1][j] =
+          (2 * t_step * func((i + 0.5) * t_step, (j + 0.5) * x_step) /
+           (1 + frac)) -
+          (matrix[i + 1][j - 1] * (1 - frac) / (1 + frac)) +
+          (matrix[i][j - 1]) + (matrix[i][j] * (1 - frac) / (1 + frac));
+    }
+  }
 }

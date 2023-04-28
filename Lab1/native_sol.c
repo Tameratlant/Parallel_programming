@@ -2,7 +2,8 @@
 #include "stdlib.h"
 #include "write.c"
 #include <stdio.h>
-#include "mpi.h"
+#include <time.h>
+//#include "mpi.h"
 
 extern double func(double t, double x);
 extern double fi(double x);
@@ -12,8 +13,6 @@ extern double t_max;
 extern double x_max;
 extern double t_step;
 extern double x_step;
-
-void fill_matrix(double **matrix, int n_k, int n_m);
 
 int main(int argc, char **argv) {
   int i;
@@ -26,10 +25,13 @@ int main(int argc, char **argv) {
   }
 
   //printf("n_k: %d n_m: %d\n", n_k, n_m);
-  double start = MPI_Wtime();
+  clock_t start,end;
+  start=clock();
+  //double start = MPI_Wtime();
   fill_matrix(matrix, n_k, n_m);
-  double end = MPI_Wtime();
-  printf("Time: %f seconds\n", end - start);
+  //double end = MPI_Wtime();
+  end=clock();
+  printf("Time: %ld mc seconds\n", end - start);
   write_to_out(matrix, n_m, n_k);
 
   for (i = 0; i < n_k; i++) {
@@ -39,27 +41,4 @@ int main(int argc, char **argv) {
   free(matrix);
 
   return 0;
-}
-
-void fill_matrix(double **matrix, int n_k, int n_m) {
-  int i, j;
-  double frac = t_step / x_step;
-
-  for (j = 0; j < n_m; j++) {
-    matrix[0][j] = fi(j * x_step);
-  }
-
-  for (i = 0; i < n_k; i++) {
-    matrix[i][0] = ksi(i * t_step);
-  }
-
-  for (i = 0; i < n_k - 1; i++) {
-    for (j = 0; j < n_m; j++) {
-      matrix[i + 1][j] =
-          (2 * t_step * func((i + 0.5) * t_step, (j + 0.5) * x_step) /
-           (1 + frac)) -
-          (matrix[i + 1][j - 1] * (1 - frac) / (1 + frac)) +
-          (matrix[i][j - 1]) + (matrix[i][j] * (1 - frac) / (1 + frac));
-    }
-  }
 }

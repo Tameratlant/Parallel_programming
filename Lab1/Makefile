@@ -23,5 +23,4 @@ $(TARGET0): $(OBJ0)
 	$(CC) $(CCFLAGS) $^ -o $@
 
 clean:
-	rm -f $(TARGET) $(TARGET0)
-	rm -f $(TARGET) $(TARGET)
+	rm -f build/*

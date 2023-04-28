@@ -25,17 +25,9 @@ int main(int argc, char **argv) {
     matrix[i] = (double *)calloc(n_m, sizeof(double));
   }
 
-  printf("n_k: %d n_m: %d\n", n_k, n_m);
+  //printf("n_k: %d n_m: %d\n", n_k, n_m);
   double start = MPI_Wtime();
   fill_matrix(matrix, n_k, n_m);
-  /*
-    for (i = 0; i < n_k; i++) {
-        for (j = 0; j < n_m; j++) {
-            printf("%10.2f", matrix[i][j]);
-        }
-    printf("\n");
-    }
-    */
   double end = MPI_Wtime();
   printf("Time: %f seconds\n", end - start);
   write_to_out(matrix, n_m, n_k);

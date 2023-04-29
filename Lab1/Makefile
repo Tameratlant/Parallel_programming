@@ -1,5 +1,4 @@
 CC = mpicc
-CCFLAGS = -Wall
 
 SRC = main.c
 SRC0 = native_sol.c
@@ -14,13 +13,13 @@ TARGET0 = build/native_task
 all: $(TARGET) $(TARGET0)
 
 $(TARGET): $(OBJ)
-	$(CC) $(CCFLAGS) $^ -o $@
+	$(CC) $^ -o $@
 
 $(TARGET0): $(OBJ0)
-	$(CC) $(CCFLAGS) $^ -o $@
+	$(CC) $^ -o $@
 
 %.o: %.c
-	$(CC) $(CCFLAGS) $^ -o $@
+	$(CC) $^ -o $@
 
 clean:
 	rm -f build/*
